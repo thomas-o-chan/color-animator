@@ -1,0 +1,16 @@
+{
+  "name": "color-animator",
+  "version": "0.1.0",
+  "description": "javascript lirary for managing animations between colors in a natural way",
+  "main": "index.ts",
+  "scripts": {
+    "test": "test"
+  },
+  "keywords": [
+    "color",
+    "animation",
+    "colour"
+  ],
+  "author": "(Tom Chan) thomas.chan.ac@gmail.com",
+  "license": "MIT"
+}

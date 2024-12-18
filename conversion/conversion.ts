@@ -96,20 +96,18 @@ function getHueIfBlueIsMax(normalisedRGB, saturationRange) {
   return ((normalisedRed - normalisedGreen) / saturationRange + 4) / 6;
 }
 
-function getHue(normalisedRGB, maxSaturation, saturationRange) {
-  const normalisedRed = normalisedRGB[0];
-  const normalisedGreen = normalisedRGB[1];
-  const noralisedBlue = normalisedRGB[2];
-
-  switch (maxSaturation) {
-    case normalisedRed:
-      return getHueIfRedIsMax(normalisedRGB, saturationRange);
-    case normalisedGreen:
-      return getHueIfGreenIsMax(normalisedRGB, saturationRange);
-    case noralisedBlue:
-      return getHueIfBlueIsMax(normalisedRGB, saturationRange);
+function getHue(normalisedRGB, saturationRange) {
+  const hueCalculator = {
+    red: getHueIfRedIsMax(normalisedRGB, saturationRange),
+    green: getHueIfGreenIsMax(normalisedRGB, saturationRange),
+    blue: getHueIfBlueIsMax(normalisedRGB, saturationRange),
   }
-  return 0;
+  return hueCalculator[getMaxSaturationComponent(normalisedRGB)];
+}
+
+function getMaxSaturationComponent(normalisedRGB) {
+  const maxSatIndex = normalisedRGB.indexOf(Math.max(...normalisedRGB));
+  return ['red', 'green', 'blue'][maxSatIndex];
 }
 
 function maxInArray(arr: number[]) {
@@ -119,7 +117,7 @@ function minInArray(arr: number[]) {
   return Math.min(...arr);
 }
 
-function getSaturationRange(rgb: RGBArray) {
+function getSaturationRange(rgb: [number, number, number]) {
   return {
     max: maxInArray(rgb),
     min: minInArray(rgb),
@@ -142,7 +140,6 @@ function getHslString([r, g, b]: RGBArray): HSLString {
 
     hue = getHue(
       [normalisedRed, normalisedGreen, noralisedBlue],
-      maxSaturation,
       saturationRange
     );
   }

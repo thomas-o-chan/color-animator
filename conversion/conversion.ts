@@ -1,4 +1,11 @@
-import { RGBString, HexString, HSLString, RGBArray } from '../types.d.ts';
+import {
+  RGBString,
+  HexString,
+  HSLString,
+  RGBArray,
+  StringFormat,
+  StringColor,
+} from '../types.d.ts';
 import { isRgbColor, isHexColor, isHslColor } from '../validation.ts';
 import { getRGBArray as getRGBArrayHex } from './hex.ts';
 import { getRGBArray as getRGBArrayHsl } from './hsl.ts';
@@ -14,10 +21,12 @@ const conversion = {
     rgb: getRGBString,
     hex: getHexString,
     hsl: getHslString,
-  }
-}
+  },
+};
 
-export function getRGBComponents(input: RGBString | HexString | HSLString) {
+export function getRGBComponents(
+  input: RGBString | HexString | HSLString
+): RGBArray {
   if (isRgbColor(input)) {
     return conversion.toRGBArray.rgb(input);
   }
@@ -35,7 +44,7 @@ export function getRGBComponents(input: RGBString | HexString | HSLString) {
 
 export function convertToFormat(
   rgbArray: RGBArray,
-  format: 'rgb' | 'hsl' | 'hex' = 'rgb'
+  format: StringFormat = 'rgb'
 ) {
   if (format === 'rgb') {
     return getRGBString(rgbArray);
@@ -66,13 +75,63 @@ function getSaturation(lightness, maxSaturation, minSaturation) {
     : saturationRange / (maxSaturation + minSaturation);
 }
 
+function getHueIfRedIsMax(normalisedRGB, saturationRange) {
+  const normalisedGreen = normalisedRGB[1];
+  const noralisedBlue = normalisedRGB[2];
+  return (
+    ((normalisedGreen - noralisedBlue) / saturationRange +
+      (normalisedGreen < noralisedBlue ? 6 : 0)) /
+    6
+  );
+}
+
+function getHueIfGreenIsMax(normalisedRGB, saturationRange) {
+  const normalisedRed = normalisedRGB[0];
+  const noralisedBlue = normalisedRGB[2];
+  return ((noralisedBlue - normalisedRed) / saturationRange + 2) / 6;
+}
+function getHueIfBlueIsMax(normalisedRGB, saturationRange) {
+  const normalisedRed = normalisedRGB[0];
+  const normalisedGreen = normalisedRGB[1];
+  return ((normalisedRed - normalisedGreen) / saturationRange + 4) / 6;
+}
+
+function getHue(normalisedRGB, maxSaturation, saturationRange) {
+  const normalisedRed = normalisedRGB[0];
+  const normalisedGreen = normalisedRGB[1];
+  const noralisedBlue = normalisedRGB[2];
+
+  switch (maxSaturation) {
+    case normalisedRed:
+      return getHueIfRedIsMax(normalisedRGB, saturationRange);
+    case normalisedGreen:
+      return getHueIfGreenIsMax(normalisedRGB, saturationRange);
+    case noralisedBlue:
+      return getHueIfBlueIsMax(normalisedRGB, saturationRange);
+  }
+  return 0;
+}
+
+function maxInArray(arr: number[]) {
+  return Math.max(...arr);
+}
+function minInArray(arr: number[]) {
+  return Math.min(...arr);
+}
+
+function getSaturationRange(rgb: RGBArray) {
+  return {
+    max: maxInArray(rgb),
+    min: minInArray(rgb),
+  };
+}
+
 function getHslString([r, g, b]: RGBArray): HSLString {
   const normalisedRed = r / 255;
   const normalisedGreen = g / 255;
   const noralisedBlue = b / 255;
 
-  const maxSaturation = Math.max(normalisedRed, normalisedGreen, noralisedBlue);
-  const minSaturation = Math.min(normalisedRed, normalisedGreen, noralisedBlue);
+  const { max: maxSaturation, min: minSaturation} = getSaturationRange([normalisedRed, normalisedGreen, noralisedBlue]);
   let hue = 0,
     saturation = 0,
     lightness = (maxSaturation + minSaturation) / 2;
@@ -81,21 +140,11 @@ function getHslString([r, g, b]: RGBArray): HSLString {
     const saturationRange = maxSaturation - minSaturation;
     saturation = getSaturation(lightness, maxSaturation, minSaturation);
 
-    switch (maxSaturation) {
-      case normalisedRed:
-        hue =
-          (normalisedGreen - noralisedBlue) / saturationRange +
-          (normalisedGreen < noralisedBlue ? 6 : 0);
-        break;
-      case normalisedGreen:
-        hue = (noralisedBlue - normalisedRed) / saturationRange + 2;
-        break;
-      case noralisedBlue:
-        hue = (normalisedRed - normalisedGreen) / saturationRange + 4;
-        break;
-    }
-
-    hue /= 6;
+    hue = getHue(
+      [normalisedRed, normalisedGreen, noralisedBlue],
+      maxSaturation,
+      saturationRange
+    );
   }
 
   const hslString = `hsl(${Math.round(hue * 360)}, ${Math.round(

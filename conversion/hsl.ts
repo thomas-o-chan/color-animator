@@ -33,7 +33,7 @@ const hue2rgb = (primary: number, secondary: number, hue: number) => {
   return deNormalise(primary);
 };
 
-export function getRGBArray(hsl: string): [number, number, number] {
+export function getRGBArray(hsl: string): RGBArray {
   const hslRegex = /hsl\(\s*(\d+),\s*(\d+)%,\s*(\d+)%\)/;
   const result = hsl.match(hslRegex);
 

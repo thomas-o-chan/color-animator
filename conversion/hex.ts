@@ -1,4 +1,6 @@
-export function getRGBArray(hex: string): [number, number, number] {
+import { RGBArray } from "../types.d.ts";
+
+export function getRGBArray(hex: string): RGBArray {
   if (hex.startsWith('#')) {
     hex = hex.slice(1);
   }
@@ -12,5 +14,5 @@ export function getRGBArray(hex: string): [number, number, number] {
   const g = (bigint >> 8) & 255;
   const b = bigint & 255;
 
-  return [r, g, b];
+  return [r, g, b] as RGBArray;
 }

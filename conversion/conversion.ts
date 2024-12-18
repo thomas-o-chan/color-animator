@@ -4,8 +4,8 @@ import {
   HSLString,
   RGBArray,
   EightBitNumber,
-} from './types.d.ts';
-import { isRgbColor, isHexColor, isHslColor } from './validation';
+} from '../types.ts';
+import { isRgbColor, isHexColor, isHslColor } from '../validation.ts';
 
 function getUniformRGBArray(newValue): RGBArray {
   return [newValue, newValue, newValue];

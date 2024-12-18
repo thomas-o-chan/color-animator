@@ -1,8 +1,6 @@
-import { convertToFormat, getRGBComponents } from './conversion.ts';
+import { convertToFormat, getRGBComponents } from './conversion/conversion.ts';
 import { EightBitNumber, Options, RGBArray, StringColor } from './types.d.ts';
-import {
-  validate,
-} from './validation.ts';
+import { validate } from './validation.ts';
 
 function interpolate(
   startColor: string,
@@ -10,8 +8,16 @@ function interpolate(
   interpolation: number,
   options?: Options
 ) {
-  const {startColor: validatedstart, endColor: validatedEnd, interpolation: validatedInterpolation } = validate(startColor, endColor, interpolation);
-  const resultArray = interpolateColors(validatedstart, validatedEnd, validatedInterpolation);
+  const {
+    startColor: validatedstart,
+    endColor: validatedEnd,
+    interpolation: validatedInterpolation,
+  } = validate(startColor, endColor, interpolation);
+  const resultArray = interpolateColors(
+    validatedstart,
+    validatedEnd,
+    validatedInterpolation
+  );
   return convertToFormat(resultArray, options?.returnFormat);
 }
 
@@ -22,8 +28,12 @@ function interpolateColors(
 ) {
   const startRGBArray = getRGBComponents(startColor);
   const endRGBArray = getRGBComponents(endColor);
-  const outRGBArray = interpolateComponents(startRGBArray, endRGBArray, interpolation);
-  return outRGBArray
+  const outRGBArray = interpolateComponents(
+    startRGBArray,
+    endRGBArray,
+    interpolation
+  );
+  return outRGBArray;
 }
 
 function interpolateComponents(

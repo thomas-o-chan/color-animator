@@ -4,17 +4,30 @@ import { getRGBArray as getRGBArrayHex } from './hex.ts';
 import { getRGBArray as getRGBArrayHsl } from './hsl.ts';
 import { getRGBArray as getRGBArrayRgb } from './rgb.ts';
 
+const conversion = {
+  toRGBArray: {
+    rgb: getRGBArrayRgb,
+    hex: getRGBArrayHex,
+    hsl: getRGBArrayHsl,
+  },
+  toString: {
+    rgb: getRGBString,
+    hex: getHexString,
+    hsl: getHslString,
+  }
+}
+
 export function getRGBComponents(input: RGBString | HexString | HSLString) {
   if (isRgbColor(input)) {
-    return getRGBArrayRgb(input);
+    return conversion.toRGBArray.rgb(input);
   }
 
   if (isHexColor(input)) {
-    return getRGBArrayHex(input);
+    return conversion.toRGBArray.hex(input);
   }
 
   if (isHslColor(input)) {
-    return getRGBArrayHsl(input);
+    return conversion.toRGBArray.hsl(input);
   }
 
   throw new Error('Invalid color');

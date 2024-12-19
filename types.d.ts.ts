@@ -7,6 +7,7 @@ export type StringColor = RGBString | HexString | HSLString;
 export type NormalisedNumber = Brand<number, 'NormalisedNumber'>;
 export type EightBitNumber = Brand<number, 'EightBitNumber'>;
 export type RGBArray = [EightBitNumber, EightBitNumber, EightBitNumber];
+export type RGBComponentString = 'red' | 'green' | 'blue';
 export interface Options {
   returnFormat?: StringFormat;
 }

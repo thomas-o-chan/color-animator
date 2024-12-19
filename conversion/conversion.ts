@@ -4,7 +4,7 @@ import {
   HSLString,
   RGBArray,
   StringFormat,
-  StringColor,
+  RGBComponentString,
 } from '../types.d.ts';
 import { isRgbColor, isHexColor, isHslColor } from '../validation.ts';
 import { getRGBArray as getRGBArrayHex } from './hex.ts';
@@ -75,39 +75,61 @@ function getSaturation(lightness, maxSaturation, minSaturation) {
     : saturationRange / (maxSaturation + minSaturation);
 }
 
-function getHueIfRedIsMax(normalisedRGB, saturationRange) {
-  const normalisedGreen = normalisedRGB[1];
-  const noralisedBlue = normalisedRGB[2];
-  return (
-    ((normalisedGreen - noralisedBlue) / saturationRange +
-      (normalisedGreen < noralisedBlue ? 6 : 0)) /
-    6
-  );
+function getHSLHueCalculator(normalisedRGB: number[], saturationRange: number): HueCalculator {
+  const maxSaturationComponent = getMaxSaturationComponent(normalisedRGB);
+  const hueCalculators = {
+    red: RedHueCalculator,
+    green: GreenHueCalculator,
+    blue: BlueHueCalculator,
+  };
+
+  const HueCalculatorClass = hueCalculators[maxSaturationComponent];
+  return new HueCalculatorClass(normalisedRGB, saturationRange);
+}
+abstract class HueCalculator {
+  constructor(
+    protected normalisedRGB: number[],
+    protected saturationRange: number
+  ) {}
+  abstract calculate(): number;
 }
 
-function getHueIfGreenIsMax(normalisedRGB, saturationRange) {
-  const normalisedRed = normalisedRGB[0];
-  const noralisedBlue = normalisedRGB[2];
-  return ((noralisedBlue - normalisedRed) / saturationRange + 2) / 6;
-}
-function getHueIfBlueIsMax(normalisedRGB, saturationRange) {
-  const normalisedRed = normalisedRGB[0];
-  const normalisedGreen = normalisedRGB[1];
-  return ((normalisedRed - normalisedGreen) / saturationRange + 4) / 6;
-}
-
-function getHue(normalisedRGB, saturationRange) {
-  const hueCalculator = {
-    red: getHueIfRedIsMax(normalisedRGB, saturationRange),
-    green: getHueIfGreenIsMax(normalisedRGB, saturationRange),
-    blue: getHueIfBlueIsMax(normalisedRGB, saturationRange),
+class RedHueCalculator extends HueCalculator {
+  calculate(): number {
+    const normalisedGreen = this.normalisedRGB[1];
+    const noralisedBlue = this.normalisedRGB[2];
+    return (
+      ((normalisedGreen - noralisedBlue) / this.saturationRange +
+        (normalisedGreen < noralisedBlue ? 6 : 0)) /
+      6
+    );
   }
-  return hueCalculator[getMaxSaturationComponent(normalisedRGB)];
 }
 
-function getMaxSaturationComponent(normalisedRGB) {
+class GreenHueCalculator extends HueCalculator {
+  calculate(): number {
+    const normalisedRed = this.normalisedRGB[0];
+    const noralisedBlue = this.normalisedRGB[2];
+    return ((noralisedBlue - normalisedRed) / this.saturationRange + 2) / 6;
+  }
+}
+
+class BlueHueCalculator extends HueCalculator {
+  calculate(): number {
+    const normalisedRed = this.normalisedRGB[0];
+    const normalisedGreen = this.normalisedRGB[1];
+    return ((normalisedRed - normalisedGreen) / this.saturationRange + 4) / 6;
+  }
+}
+
+function getHSLHue(normalisedRGB: number[], saturationRange: number): number {
+  const hueCalculator = getHSLHueCalculator(normalisedRGB, saturationRange);
+  return hueCalculator.calculate();
+}
+
+function getMaxSaturationComponent(normalisedRGB): RGBComponentString {
   const maxSatIndex = normalisedRGB.indexOf(Math.max(...normalisedRGB));
-  return ['red', 'green', 'blue'][maxSatIndex];
+  return ['red', 'green', 'blue'][maxSatIndex] as RGBComponentString;
 }
 
 function maxInArray(arr: number[]) {
@@ -129,7 +151,11 @@ function getHslString([r, g, b]: RGBArray): HSLString {
   const normalisedGreen = g / 255;
   const noralisedBlue = b / 255;
 
-  const { max: maxSaturation, min: minSaturation} = getSaturationRange([normalisedRed, normalisedGreen, noralisedBlue]);
+  const { max: maxSaturation, min: minSaturation } = getSaturationRange([
+    normalisedRed,
+    normalisedGreen,
+    noralisedBlue,
+  ]);
   let hue = 0,
     saturation = 0,
     lightness = (maxSaturation + minSaturation) / 2;
@@ -138,7 +164,7 @@ function getHslString([r, g, b]: RGBArray): HSLString {
     const saturationRange = maxSaturation - minSaturation;
     saturation = getSaturation(lightness, maxSaturation, minSaturation);
 
-    hue = getHue(
+    hue = getHSLHue(
       [normalisedRed, normalisedGreen, noralisedBlue],
       saturationRange
     );

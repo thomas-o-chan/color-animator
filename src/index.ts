@@ -2,7 +2,7 @@ import { convertToFormat, getRGBComponents } from './conversion';
 import { Options, RGBArray, StringColor } from './types.d.ts';
 import { validate } from './validation';
 
-export function interpolate(
+export default function colorAnimator(
   startColor: string,
   endColor: string,
   interpolation: number,
@@ -20,6 +20,8 @@ export function interpolate(
   );
   return convertToFormat(resultArray, options?.returnFormat);
 }
+
+export { colorAnimator };
 
 function interpolateColors(
   startColor: StringColor,

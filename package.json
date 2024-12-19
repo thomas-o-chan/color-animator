@@ -2,18 +2,22 @@
   "name": "color-animator",
   "version": "0.1.0",
   "description": "javascript lirary for managing animations between colors in a natural way",
-  "main": "index.ts",
+  "main": "built/index.js",
   "scripts": {
-    "test": "vitest"
+    "test": "vitest",
+    "build": "parcel build src/index.ts"
   },
   "keywords": [
     "color",
     "animation",
     "colour"
   ],
-  "author": "(Tom Chan) thomas.chan.ac@gmail.com",
+  "author": "Tom Chan (https://github.com/thomas-o-chan)",
   "license": "MIT",
   "devDependencies": {
+    "@types/node": "^22.10.2",
+    "parcel": "^2.0.0",
+    "typescript": "^5.7.2",
     "vitest": "^2.1.8"
   }
 }

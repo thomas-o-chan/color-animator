@@ -1,4 +1,4 @@
-import { convertToFormat, getRGBComponents } from './conversion/conversion.ts';
+import { convertToFormat, getRGBComponents } from './conversion';
 import { EightBitNumber, Options, RGBArray, StringColor } from './types.d.ts';
 import { validate } from './validation.ts';
 

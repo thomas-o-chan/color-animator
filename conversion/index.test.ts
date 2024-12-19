@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { getRGBComponents } from './conversion';
+import { getRGBComponents } from '.';
 
 describe('getRGBComponents', () => {
   it('should return RGB components for a valid RGB string', () => {

@@ -4,7 +4,7 @@
   "description": "javascript lirary for managing animations between colors in a natural way",
   "main": "built/index.js",
   "scripts": {
-    "test": "vitest",
+    "test": "vitest --coverage",
     "build": "parcel build src/index.ts"
   },
   "keywords": [
@@ -16,6 +16,7 @@
   "license": "MIT",
   "devDependencies": {
     "@types/node": "^22.10.2",
+    "@vitest/coverage-v8": "^2.1.8",
     "parcel": "^2.0.0",
     "typescript": "^5.7.2",
     "vitest": "^2.1.8"

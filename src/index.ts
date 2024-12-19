@@ -1,8 +1,8 @@
 import { convertToFormat, getRGBComponents } from './conversion';
-import { EightBitNumber, Options, RGBArray, StringColor } from './types.d.ts';
-import { validate } from './validation.ts';
+import { Options, RGBArray, StringColor } from './types.d.ts';
+import { validate } from './validation';
 
-function interpolate(
+export function interpolate(
   startColor: string,
   endColor: string,
   interpolation: number,

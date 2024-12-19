@@ -5,13 +5,13 @@ import {
   RGBArray,
   StringFormat,
 } from '../types.d.ts';
-import { isRgbColor, isHexColor, isHslColor } from '../validation.ts';
-import { getHslString } from './to-string/hsl.ts';
-import { getRGBArray as getRGBArrayHex } from './to-array/hex.ts';
-import { getRGBArray as getRGBArrayHsl } from './to-array/hsl.ts';
-import { getRGBArray as getRGBArrayRgb } from './to-array/rgb.ts';
-import { getRGBString } from './to-string/rgb.ts';
-import { getHexString } from './to-string/hex.ts';
+import { isRgbColor, isHexColor, isHslColor } from '../validation';
+import { getHslString } from './to-string/hsl.js';
+import { getRGBArray as getRGBArrayHex } from './to-array/hex.js';
+import { getRGBArray as getRGBArrayHsl } from './to-array/hsl.js';
+import { getRGBArray as getRGBArrayRgb } from './to-array/rgb.js';
+import { getRGBString } from './to-string/rgb.js';
+import { getHexString } from './to-string/hex.js';
 
 const conversion = {
   toRGBArray: {

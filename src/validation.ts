@@ -4,7 +4,6 @@ import type {
   HexString,
   HSLString,
   EightBitNumber,
-  StringColor,
 } from './types.d.ts';
 export function validate(
   startColor: string,

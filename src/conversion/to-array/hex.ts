@@ -1,4 +1,4 @@
-import { RGBArray } from "../../types.d.ts";
+import { RGBArray } from '../../types.d.ts';
 
 export function getRGBArray(hex: string): RGBArray {
   if (hex.startsWith('#')) {

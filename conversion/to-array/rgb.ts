@@ -1,4 +1,4 @@
-import { RGBArray, RGBString } from '../types.d.ts';
+import { RGBArray, RGBString } from '../../types.d.ts';
 
 export function getRGBArray(rgb: RGBString): RGBArray {
   const rgbRegex = /rgb\((\d+),\s*(\d+),\s*(\d+)\)/;

@@ -1,4 +1,4 @@
-import { RGBArray, EightBitNumber } from '../types.d.ts';
+import { RGBArray, EightBitNumber } from '../../types.d.ts';
 
 function getUniformRGBArray(newValue): RGBArray {
   return [newValue, newValue, newValue];

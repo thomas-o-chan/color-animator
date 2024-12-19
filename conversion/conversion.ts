@@ -10,6 +10,8 @@ import { getHslString } from './to-string/hsl.ts';
 import { getRGBArray as getRGBArrayHex } from './hex.ts';
 import { getRGBArray as getRGBArrayHsl } from './hsl.ts';
 import { getRGBArray as getRGBArrayRgb } from './rgb.ts';
+import { getRGBString } from './to-string/rgb.ts';
+import { getHexString } from './to-string/hex.ts';
 
 const conversion = {
   toRGBArray: {
@@ -56,14 +58,4 @@ export function convertToFormat(
     return getHexString(rgbArray);
   }
   return getRGBString(rgbArray);
-}
-
-function getRGBString(rgbArray: RGBArray): RGBString {
-  return `rgb(${rgbArray.join(', ')})` as RGBString;
-}
-
-function getHexString(rgbArray: RGBArray): HexString {
-  return `#${rgbArray
-    .map((value) => value.toString(16).padStart(2, '0'))
-    .join('')}` as HexString;
 }

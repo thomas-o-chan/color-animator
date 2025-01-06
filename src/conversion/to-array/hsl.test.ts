@@ -8,6 +8,10 @@ describe('hslToRgbArray', () => {
       expect(getRGBArray(input as any)).toEqual(output);
     });
   });
+  it('should throw an error for an invalid HSL string', () => {
+    const input: any = 'hsl(240, 100%, 50)';
+    expect(() => getRGBArray(input)).toThrow();
+  });
 });
 
 const conversions = {

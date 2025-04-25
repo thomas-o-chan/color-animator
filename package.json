@@ -3,6 +3,7 @@
   "version": "0.2.0",
   "description": "javascript library for managing animations between colors in an aesthetic, natural way",
   "main": "built/index.js",
+  "files": ["built"],
   "scripts": {
     "test": "vitest --coverage",
     "build": "parcel build src/index.ts"

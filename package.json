@@ -16,6 +16,11 @@
     "gradient",
     "interpolate"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/thomas-o-chan/color-animator"
+  },
+  "homepage": "https://github.com/thomas-o-chan/color-animator",
   "author": "Tom Chan (https://github.com/thomas-o-chan)",
   "license": "MIT",
   "devDependencies": {

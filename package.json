@@ -1,8 +1,9 @@
 {
   "name": "color-animator",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "javascript library for managing animations between colors in an aesthetic, natural way",
   "main": "built/index.js",
+  "files": ["built"],
   "scripts": {
     "test": "vitest --coverage",
     "build": "parcel build src/index.ts"
@@ -15,6 +16,11 @@
     "gradient",
     "interpolate"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/thomas-o-chan/color-animator"
+  },
+  "homepage": "https://github.com/thomas-o-chan/color-animator",
   "author": "Tom Chan (https://github.com/thomas-o-chan)",
   "license": "MIT",
   "devDependencies": {
